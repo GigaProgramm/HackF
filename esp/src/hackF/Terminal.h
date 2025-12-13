@@ -15,7 +15,7 @@ class Terminal{
     void newLine();  
     void scrollUp();
     void clearAll();
-    void cmdParse();
+    void cmdParse(String input);
   private:
     String inputText = "";
     int cursorX = 5;

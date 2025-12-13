@@ -23,6 +23,8 @@ void Terminal::run(){
   tft.setCursor(0,0);
   tft.print("terminal");
   tft.drawLine(0,10, 320, 10, ST77XX_WHITE);
+  cursorX = 5;
+  cursorY = 15;
   checkKeyboard();
 }
 
@@ -32,10 +34,7 @@ void Terminal::checkKeyboard() {
     
     if (Wire.available()) {
       char c = Wire.read();
-      if(c == 0x80){
-        tft.fillScreen(ST77XX_BLACK);
-        break;
-      } else if (c != 0) {
+      if (c != 0) {
         handleKeyPress(c);
       }
     }
@@ -47,7 +46,6 @@ void Terminal::checkKeyboard() {
 void Terminal::handleKeyPress(char key) {
   Serial.print("Key: 0x");
   Serial.println(key, HEX);
-  Serial.println(inputText);
   
   switch (key) {
     case 0x8: // Backspace
@@ -59,7 +57,9 @@ void Terminal::handleKeyPress(char key) {
       break;
 
     case 0x0D: // Enter command
-      cmdParse();
+      cmdParse(inputText);
+      inputText = "";
+      Terminal::run();
       break;
 
     case 0x1B: // ESC
@@ -72,6 +72,7 @@ void Terminal::handleKeyPress(char key) {
       }
       break;
   }
+  Serial.println(inputText);
 }
 
 void Terminal::addChar(char c) {
@@ -139,4 +140,25 @@ void Terminal::clearAll() {
   inputText = "";
   run();
 }
-void
+void Terminal::cmdParse(String input) {
+  String cmd = input;
+
+  //input.remove(input.length() - 1);
+  cmd = input;
+  Serial.print('@');
+  Serial.println(cmd);
+
+  Serial.print(':');
+  Serial.println(cmd);
+
+  if(cmd == "texteditor") {
+      texteditor.KeyBoardMain();
+  }
+  else {
+      newLine();
+      tft.setCursor(cursorX, cursorY);
+      tft.print("!no command in scope!");
+      newLine();
+      checkKeyboard();
+  }
+}

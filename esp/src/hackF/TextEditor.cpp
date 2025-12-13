@@ -32,7 +32,7 @@ void TextEditor::drawUI() {
   tft.setCursor(10, 5);
   tft.println("Text editor");
   
-  tft.drawLine(0, 20, 240, 20, ST77XX_WHITE);
+  tft.drawLine(0, 20, 320, 20, ST77XX_WHITE);
   
   tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(5, 305);
@@ -50,7 +50,7 @@ void TextEditor::checkKeyboard() {
     if (Wire.available()) {
       char c = Wire.read();
       if(c == 0x80){
-        tft.fillScreen(ST77XX_BLACK);
+        inputText = "";
         break;
       } else if (c != 0) {
         handleKeyPress(c);
