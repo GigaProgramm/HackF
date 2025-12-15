@@ -20,6 +20,7 @@ Terminal terminal;
 
 void Terminal::run(){
   tft.fillScreen(ST77XX_BLACK);
+  tft.setTextSize(1);
   tft.setCursor(0,0);
   tft.print("terminal");
   tft.drawLine(0,10, 320, 10, ST77XX_WHITE);
@@ -154,11 +155,15 @@ void Terminal::cmdParse(String input) {
   if(cmd == "texteditor") {
       texteditor.KeyBoardMain();
   }
+  else if(cmd == "dino"){
+    dino.mainGame();
+  }
   else {
       newLine();
       tft.setCursor(cursorX, cursorY);
       tft.print("!no command in scope!");
       newLine();
+      inputText = "";
       checkKeyboard();
   }
 }
