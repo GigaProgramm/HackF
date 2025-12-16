@@ -30,6 +30,9 @@ void Terminal::run(){
 }
 
 void Terminal::checkKeyboard() {
+  tft.setCursor(cursorX, cursorY);
+  tft.print(">");
+  cursorX += charWidth;
   while(1){
     Wire.requestFrom(CARDKB_ADDR, 1);
     
