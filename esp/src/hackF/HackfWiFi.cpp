@@ -9,13 +9,14 @@ String HackfWiFi::scan() {
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
-  String result = "\n";
+  String result = "";
 
   int n = WiFi.scanNetworks();
 
   if (n == 0){
     Serial.println("no networks found");
-    result = "no networks found";
+    result += "no networks found";
+    result = '1' + ',' + result;
   } else
   {
     Serial.print(n);
@@ -32,14 +33,8 @@ String HackfWiFi::scan() {
       result += WiFi.SSID(i) + ((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*") + "\n";
       delay(10);
     }
+    result = String(n) + "," + result;
   }
   Serial.println("");
   return result;
-}
-
-int HackfWiFi::numWeb(){
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  int n = WiFi.scanNetworks();
-  return n;
 }

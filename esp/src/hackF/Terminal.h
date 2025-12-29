@@ -16,6 +16,7 @@ class Terminal{
     void scrollUp();
     void clearAll();
     void cmdParse(String input);
+    void wifiScanParse();
   private:
     String inputText = "";
     int cursorX = 5;

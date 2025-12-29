@@ -148,9 +148,7 @@ void Terminal::clearAll() {
 }
 void Terminal::cmdParse(String input) {
   String cmd = input;
-
-  //input.remove(input.length() - 1);
-  cmd = input;
+  cmd.trim();
   Serial.print('@');
   Serial.println(cmd);
 
@@ -171,15 +169,7 @@ void Terminal::cmdParse(String input) {
     resetFunc();// потом запихну ребут в отдельный класс 
   }
   else if(cmd == "wscan"){
-    Serial.println(hackfwifi.scan());
-    tft.setTextColor(ST77XX_YELLOW);
-    tft.print(hackfwifi.scan());
-    tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
-    for(int i = 0; i <= hackfwifi.numWeb(); i++){
-      newLine();
-    }
-    inputText = "";
-    checkKeyboard();
+    wifiScanParse();
   }
   else {
       newLine();
@@ -191,6 +181,21 @@ void Terminal::cmdParse(String input) {
       inputText = "";
       checkKeyboard();
   }
+}
+
+void Terminal::wifiScanParse(){
+    tft.setTextColor(ST77XX_YELLOW);
+    String input = hackfwifi.scan();
+    int lumLine = 1;
+    lumLine = (input.substring(0, input.indexOf(','))).toInt();
+    input = input.substring(input.indexOf(',')+1, input.length());
+    tft.print('\n' + input);
+    for(int i = 0; i <= lumLine; i++){
+      newLine();
+    }
+    tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
+    inputText = "";
+    checkKeyboard();
 }
 
 
