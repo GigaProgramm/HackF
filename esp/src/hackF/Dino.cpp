@@ -56,12 +56,7 @@ void Dino::game(){
   tft.drawRGBBitmap(cactusPosX, cactusPosY, cactus, 10, 16);
   score += cactusSpeed;  
 
-  if((dinoPosX - cactusPosX > -15 && dinoPosX - cactusPosX < 20) && (cactusPosY- dinoPosY < 15)){
-    Serial.println(":::::");
-    Serial.println(dinoPosX - cactusPosX);
-    Serial.println(dinoPosX - cactusPosX);
-    Serial.println(dinoPosY - cactusPosY);
-    Serial.println(":::::");
+  if((dinoPosX - cactusPosX > -15 && dinoPosX - cactusPosX < 15) && (cactusPosY - dinoPosY < 20)){
     endGame();
   }
 }
@@ -90,7 +85,6 @@ void Dino::mainGame(){
 }
 
 void Dino::endGame(){
-  Serial.println("game over");
   tft.setTextColor(ST77XX_BLACK, ST77XX_WHITE);
   tft.setTextSize(3);
   tft.setCursor(80, 80);

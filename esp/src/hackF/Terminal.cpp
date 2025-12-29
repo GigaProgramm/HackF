@@ -8,6 +8,7 @@
 #include "AudioScope.h"
 #include "TextEditor.h"
 #include "Dino.h"
+#include "HackfWiFi.h"
 
 #define CARDKB_ADDR 0x5F
 
@@ -15,8 +16,11 @@ extern Adafruit_ST7789 tft;
 extern AudioScope audioscope;
 extern TextEditor texteditor;
 extern Dino dino;
+extern HackfWiFi hackfwifi;
 
 Terminal terminal;
+
+void(* resetFunc) (void) = 0;
 
 void Terminal::run(){
   tft.fillScreen(ST77XX_BLACK);
@@ -62,8 +66,6 @@ void Terminal::handleKeyPress(char key) {
 
     case 0x0D: // Enter command
       cmdParse(inputText);
-      inputText = "";
-      Terminal::run();
       break;
 
     case 0x1B: // ESC
@@ -157,16 +159,38 @@ void Terminal::cmdParse(String input) {
 
   if(cmd == "texteditor") {
       texteditor.KeyBoardMain();
+      inputText = "";
+      Terminal::run();
   }
   else if(cmd == "dino"){
     dino.mainGame();
+    inputText = "";
+    Terminal::run();
+  }
+  else if(cmd == "hreboot"){
+    resetFunc();// потом запихну ребут в отдельный класс 
+  }
+  else if(cmd == "wscan"){
+    Serial.println(hackfwifi.scan());
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.print(hackfwifi.scan());
+    tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
+    for(int i = 0; i <= hackfwifi.numWeb(); i++){
+      newLine();
+    }
+    inputText = "";
+    checkKeyboard();
   }
   else {
       newLine();
       tft.setCursor(cursorX, cursorY);
-      tft.print("!no command in scope!");
+      tft.setTextColor(ST77XX_RED);
+      tft.print("no command in scope");
+      tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
       newLine();
       inputText = "";
       checkKeyboard();
   }
 }
+
+
