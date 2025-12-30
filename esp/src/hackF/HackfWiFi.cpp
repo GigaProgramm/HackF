@@ -30,7 +30,7 @@ String HackfWiFi::scan() {
       Serial.print(WiFi.RSSI(i));
       Serial.print(")");
       Serial.println((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*");
-      result += WiFi.SSID(i) + ((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*") + "\n";
+      result += WiFi.SSID(i) + "(" + WiFi.RSSI(i) + ")" + ((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*") + "\n";
       delay(10);
     }
     result = String(n) + "," + result;
