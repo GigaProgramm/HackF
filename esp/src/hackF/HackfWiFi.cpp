@@ -15,8 +15,7 @@ String HackfWiFi::scan() {
 
   if (n == 0){
     Serial.println("no networks found");
-    result += "no networks found";
-    result = '1' + ',' + result;
+    return "";
   } else
   {
     Serial.print(n);

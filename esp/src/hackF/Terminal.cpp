@@ -186,12 +186,18 @@ void Terminal::cmdParse(String input) {
 void Terminal::wifiScanParse(){
     tft.setTextColor(ST77XX_YELLOW);
     String input = hackfwifi.scan();
-    int lumLine = 1;
-    lumLine = (input.substring(0, input.indexOf(','))).toInt();
-    input = input.substring(input.indexOf(',')+1, input.length());
-    tft.print('\n' + input);
-    for(int i = 0; i <= lumLine; i++){
+    int numLine = 1;
+    if(input == ""){
       newLine();
+      tft.print("no networks found");
+      newLine();
+    } else {
+      numLine = (input.substring(0, input.indexOf(','))).toInt();
+      input = input.substring(input.indexOf(',')+1, input.length());
+      tft.print('\n' + input);
+      for(int i = 0; i <= numLine; i++){
+        newLine();
+      }
     }
     tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
     inputText = "";
